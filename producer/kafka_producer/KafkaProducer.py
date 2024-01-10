@@ -10,7 +10,7 @@ class KafkaProducer:
     def __init__(self) -> None:
         self.CLOUDKARAFKA_BROKERS = os.getenv('CLOUDKARAFKA_HOSTNAME')
         self.BUS_API_URL = os.getenv('BUS_API')
-        self.CLOUDKARAFKA_USERNAME = os.getenv('CLOUDKARAFKA_USERNAME')
+        self.CLOUDKARAFKA_USERNAME = os.getenv('CLOUDKARAFKA_USERNAME_Producer')
         self.CLOUDKARAFKA_PASSWORD = os.getenv('CLOUDKARAFKA_PASSWORD')
         self.CLOUDKARAFKA_TOPIC = os.getenv('CLOUDKARAFKA_TOPIC_NAME')
         self.API_COLUMNNAME = os.getenv('API_COLUMN_NAME')
@@ -46,4 +46,5 @@ class KafkaProducer:
         for row in rows_from_api:
             message = json.dumps(row)
             producer.produce(topic_name, message, callback=self.delivery_callback)
-        producer.flush()
+            producer.poll(1)
+        # producer.flush()
