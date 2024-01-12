@@ -1,3 +1,6 @@
 from kafka_producer import producer
+import time
 
-producer.run()
+while True:
+    producer.run()
+    time.sleep(10)

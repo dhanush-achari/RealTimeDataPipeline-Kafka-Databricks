@@ -42,9 +42,14 @@ class KafkaProducer:
         producer = Producer(**producer_config)
         rows_from_api = json.loads(self.get_data_from_api())[self.API_COLUMNNAME]
 
-
-        for row in rows_from_api:
-            message = json.dumps(row)
-            producer.produce(topic_name, message, callback=self.delivery_callback)
-            producer.poll(1)
+        initial = """{"message":"""
+        final = """}"""
+        message = initial + json.dumps(rows_from_api) + final
+        print(message)
+        producer.produce(topic_name, message, callback=self.delivery_callback)
+        producer.poll(5)
+        # for row in rows_from_api:
+        #     message = json.dumps(row)
+        #     producer.produce(topic_name, message, callback=self.delivery_callback)
+        #     producer.poll(1)
         # producer.flush()
